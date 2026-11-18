@@ -35,7 +35,7 @@ public class AlertController {
     }
 
     @GetMapping("/health")
-    public ResponseEntity> healthCheck() {
+    public ResponseEntity<Map<String, String>> healthCheck() {
         return ResponseEntity.ok(Map.of(
                 "status", "UP",
                 "timestamp", LocalDateTime.now().toString()
