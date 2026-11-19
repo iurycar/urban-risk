@@ -16,14 +16,14 @@ Plataforma integrada de monitoramento, análise e priorização de riscos cotidi
 
 ## Arquitetura e Recursos Implementados
 
-* **Backend (`solution/`)**:
+* **Backend (`backend/`)**:
   * **Arquitetura em Camadas**: organizado em `controller`, `service`, `repository`, `model`, `dto` e `config`.
-  * **Persistência em H2 (`solution/data/urbanriskdb.mv.db`)**: banco de dados embarcado persistido em arquivo no repositório, já populado com dados iniciais via `DatabaseSeeder`.
+  * **Persistência em H2 (`backend/data/urbanriskdb.mv.db`)**: banco de dados embarcado persistido em arquivo no repositório, já populado com dados iniciais via `DatabaseSeeder`.
   * **Motor Analítico de Priorização (`AlertPrioritizationService`)**: calcula um score de `0` a `100` ponderando severidade (`1..5`), confiabilidade e peso institucional da origem (`SENSOR`, `BASE_PUBLICA`, `REGISTRO_COMUNITARIO`) e bônus de recorrência espaço-temporal no mesmo bairro na última 1 hora.
   * **Ingestão Multiorigem e Simulação IoT (`IngestionController` & `SensorSimulatorService`)**: endpoints dedicados para sensores, bases públicas e relatos comunitários, além de geração periódica simulada de eventos em tempo real.
   * **Proteção de Dados Pessoais (LGPD)**: identificadores opcionais enviados por moradores são convertidos em hash **SHA-256** irreversível antes da persistência e nunca são expostos nos DTOs públicos.
 
-* **Frontend (`mobile/`)**:
+* **Frontend (`frontend/`)**:
   * **Painel de Acompanhamento (`DashboardScreen`)**: indicadores consolidados em tempo real (ocorrências ativas, alertas críticos, confiança média e bairro mais afetado), atalhos por categoria e top 3 alertas prioritários.
   * **Eventos & Mapa Urbano (`EventListScreen`)**: lista filtrável por tipo de risco e visualização em mapa setorial georreferenciado, exibindo origem, nível de confiança e encerramento de ocorrências por agentes locais.
   * **Registro Comunitário (`ReportFormScreen`)**: formulário acessível para moradores reportarem ocorrências urbanas na sua região.
@@ -35,13 +35,13 @@ Plataforma integrada de monitoramento, análise e priorização de riscos cotidi
 
 ```text
 urban-risk/
-├── solution/                  # API REST Java 17 + Spring Boot + H2
+├── backend/                  # API REST Java 17 + Spring Boot + H2
 │   ├── data/
 │   │   └── urbanriskdb.mv.db # Arquivo do banco H2 com dados de teste
 │   └── src/
 │       ├── main/java/global/solution/
 │       └── test/java/global/solution/
-├── mobile/                   # Aplicativo React Native (Expo + TypeScript)
+├── frontend/                   # Aplicativo React Native (Expo + TypeScript)
 │   ├── App.tsx
 │   └── src/
 │       ├── components/
@@ -87,11 +87,11 @@ urban-risk/
 
 ---
 
-## Como Executar o Aplicativo Mobile (React Native / Expo)
+## Como Executar o Frontend (React Native / Expo)
 
-1. Em um segundo terminal, acesse a pasta `mobile`:
+1. Em um segundo terminal, acesse a pasta `frontend`:
    ```bash
-   cd mobile
+   cd frontend
    ```
 2. Instale as dependências:
    ```bash
@@ -101,6 +101,6 @@ urban-risk/
    ```bash
    npx expo start
    ```
-4. Pressione **`w`** no terminal para abrir diretamente no navegador (`http://localhost:8081`) ou escaneie o QR Code no aplicativo **Expo Go** (caso utilize dispositivo físico, ajuste `DEFAULT_HOST` em `mobile/src/services/api.ts` para o IP local da máquina).
+4. Pressione **`w`** no terminal para abrir diretamente no navegador (`http://localhost:8081`) ou escaneie o QR Code no aplicativo **Expo Go** (caso utilize dispositivo físico, ajuste `DEFAULT_HOST` em `frontend/src/services/api.ts` para o IP local da máquina).
 
 ---
